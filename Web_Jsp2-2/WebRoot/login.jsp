@@ -27,6 +27,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	
   	<%
+  		//接受服务器的状态码
+		String status = String.valueOf(request.getAttribute("status"));
+  		
   		//使用request获取本地cookie
   		Cookie [] toArray=request.getCookies();
  		String username="";//默认的用户名
@@ -38,6 +41,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  				userpwd=cook.getValue();
  			}
  		}
+ 		//阻止死循环
+		if(!status.equals("500")){
+			//需要发送的连接
+			String url = "serverLogin.jsp?logName="+username+"&logPwd="+userpwd;
+			request.getRequestDispatcher(url).forward(request, response);
+		}
+ 		
   	 %>
   	
     <form action="serverLogin.jsp" method="post">

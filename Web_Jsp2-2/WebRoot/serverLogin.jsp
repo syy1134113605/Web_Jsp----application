@@ -36,6 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		//失败
     		String msg = "<script>alert('用户名或者密码有误!请检查');</script>";
     		request.setAttribute("msg", msg);
+    		request.setAttribute("status", "500");//让客户端停止自动提交
     		//请求转发
     		request.getRequestDispatcher("login.jsp").forward(request, response);
     	}else{
@@ -43,6 +44,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		//生命周期:浏览器不关闭,该session一直存在
     		User user = new User(logName,logPwd);
     		session.setAttribute("user", user);
+    		
+    		
+    		
+    		//给application对象保存当前人数
+    		/**
+    			获取旧人数，然后在旧人数+1将结果赋值给旧人数
+    		*/
+    		Integer num= Integer.valueOf(application.getAttribute("num")==null?"0":application.getAttribute("num").toString());
+    		num++;
+    		application.setAttribute("num", num++);
+    		
+    		
     		
     		
     		/**
